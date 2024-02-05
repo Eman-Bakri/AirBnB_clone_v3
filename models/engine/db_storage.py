@@ -90,18 +90,19 @@ class DBStorage:
         self.__session.close()
 
     def get(self, cls, id):
-        '''
-            Retrieve an obj w/class name and id
-        '''
-        result = None
-        try:
-            objs = self.__session.query(models.classes[cls]).all()
-            for obj in objs:
-                if obj.id == id:
-                    result = obj
-        except BaseException:
-            pass
-        return result
+        """
+        returns object based on it's class and id
+        None if not found
+        Args:
+            id (int): id of the class instance
+            cls (obj): class object_
+        """
+        if cls in classes.values() and id and type(id) is str:
+            d_obj = self.all(cls)
+            for key, value in d_obj.items():
+                if key.split(".")[1] == id:
+                    return value
+        return None
 
     def count(self, cls=None):
         '''
